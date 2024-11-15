@@ -8,7 +8,7 @@ import (
 	"sync"
 
 	"github.com/streadway/amqp"
-	"github.com/tiagoncardoso/go-template/pkg/events"
+	"github.com/tiagoncardoso/fc-pge-temperatura-cep/pkg/events"
 )
 
 type OrderCreatedHandler struct {
