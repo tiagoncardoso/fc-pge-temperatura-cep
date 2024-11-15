@@ -3,13 +3,17 @@ package config
 import "github.com/spf13/viper"
 
 type Conf struct {
-	MyVariable string `mapstructure:"MY_VARIABLE"`
+	ApiUrlZip     string `mapstructure:"API_URL_ZIP"`
+	ApiUrlWeather string `mapstructure:"API_URL_WEATHER"`
+	ApiKeyWeather string `mapstructure:"API_KEY_WEATHER"`
 }
 
 func LoadConfig() (*Conf, error) {
 	viper.SetConfigName("app_config")
+	viper.SetConfigType("env")
 	viper.AddConfigPath(".")
-	viper.SetConfigType("yaml")
+	viper.SetConfigFile(".env")
+	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err != nil {
 		return nil, err
