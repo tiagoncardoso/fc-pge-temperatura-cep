@@ -1,4 +1,4 @@
-module github.com/tiagoncardoso/go-template
+module github.com/tiagoncardoso/fc-pge-temperatura-cep
 
 go 1.23.2
 
