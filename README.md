@@ -1,15 +1,30 @@
 ## Go Template
 
-Template para criação de projetos em Go, utilizando as melhores práticas e padrões de desenvolvimento.
+O sistema deve receber um CEP, identificar a cidade e retornar o clima atual (temperatura em graus celsius, fahrenheit e kelvin).
 
 #### 🖥️ Detalhes Gerais:
 
 Especificações e detalhes gerais do projeto. 
-- a
-- b
-- c
+- O sistema deve receber um CEP válido de 8 digitos
+- Será utilizada a API viaCEP para encontrar a localização que deseja consultar a temperatura: https://viacep.com.br/
+- Será utilizada a API WeatherAPI para consultar a temperatura da cidade: https://www.weatherapi.com/
+- O sistema deve responder adequadamente nos seguintes cenários:
+  - Em caso de sucesso:
+    - Código HTTP: **200**
+    - Response Body: **{ "temp_C": 28.5, "temp_F": 28.5, "temp_K": 28.5 }**
+  - Em caso de falha, caso o CEP seja inválido (com formato correto):
+    - Código HTTP: **422**
+    - Mensagem: **invalid zipcode**
+  - Em caso de falha, caso o CEP não seja encontrado:
+    -  Código HTTP: **404**
+    - Mensagem: **can not find zipcode**
+- Desenvolver testes automatizados para garantir a qualidade do código
+- Utilizar docker-compose para subir a aplicação
+- O sistema deverá ser publicado no Google Cloud Run
 
-> Como adicional, será também possível consultar um pedido específico, através de um endpoint (GET /order/:id), um service `ListOrderById` com gRPC e uma query `listOrder` com GraphQL.
+> 💡 Dica:<br/>
+> - A conversão de Celsius para Fahrenheit é: **F = C * 9/5 + 32**
+> - A conversão de Celsius para Kelvin é: **K = C + 273.15**
 
 #### 🗂️ Estrutura do Projeto
     .
@@ -25,14 +40,11 @@ Especificações e detalhes gerais do projeto.
     │    │      └── entity        ### Entidades de domínio
     │    ├── application   # Implementações de casos de uso e utilitários
     │    │      └── usecase       ### Casos de uso da aplicação
-    │    ├── infra         # Implementações de repositórios e conexões com serviços externos
-    │    │      ├── database      ### Implementações de repositório
-    │    │      ├── graph         ### Implementações e códigos gerados para a API GraphQL
-    │    │      ├── grpc          ### Implementações e códigos gerados para a API gRPC
-    │    │      └── web           ### Implementações e códigos gerados para a API Rest
-    │    └── event         # Implementações de eventos e listeners
+    │    └── infra         # Implementações de repositórios e conexões com serviços externos
+    │           ├── repository    ### Implementações de repositório
+    │           └── web           ### Implementações e códigos gerados para a API Rest
     ├── pkg                # Pacotes reutilizáveis utilizados na aplicação
-    ├── init_db.sql        # Script de inicialização do banco de dados
+    ├── .env               # Arquivo de parametrizações globais
     └── README.md
 
 #### 🧭 Parametrização
