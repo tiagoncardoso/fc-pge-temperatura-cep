@@ -2,8 +2,8 @@ package usecase
 
 import (
 	"github.com/tiagoncardoso/fc-pge-temperatura-cep/internal/application/dto"
+	"github.com/tiagoncardoso/fc-pge-temperatura-cep/internal/application/helper"
 	"github.com/tiagoncardoso/fc-pge-temperatura-cep/pkg/http_request"
-	"strconv"
 	"strings"
 )
 
@@ -17,11 +17,9 @@ func NewRequestZipData(zipDataApiUrl string) *RequestZipData {
 	}
 }
 
-func (c *RequestZipData) Execute(zipCode int) (dto.ViaCepApiDto, error) {
-	zipUrl := makeUrl(c.zipDataApiUrl, zipCode)
+func (r *RequestZipData) Execute(zipCode string) (dto.ViaCepApiDto, error) {
+	zipUrl := makeZipApiUrl(r.zipDataApiUrl, zipCode)
 	zipData, err := http_request.HttpGetRequest[dto.ViaCepApiDto](zipUrl)
-
-	// TODO: Adicionar tratamentos de erro para CEP inválido e CEP não encontrado separadas para que o usuário receba o retorno correto
 	if err != nil {
 		return dto.ViaCepApiDto{}, err
 	}
@@ -29,8 +27,8 @@ func (c *RequestZipData) Execute(zipCode int) (dto.ViaCepApiDto, error) {
 	return zipData, nil
 }
 
-func makeUrl(zipCodeBaseUrl string, zipCode int) string {
-	strZipCode := strconv.Itoa(zipCode)
+func makeZipApiUrl(zipCodeBaseUrl string, zipCode string) string {
+	strZipCode := helper.SanitizeZipCode(zipCode)
 
 	return strings.Replace(zipCodeBaseUrl, "{ZIP}", strZipCode, 1)
 }

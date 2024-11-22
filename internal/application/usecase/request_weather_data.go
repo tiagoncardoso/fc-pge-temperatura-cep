@@ -1,0 +1,33 @@
+package usecase
+
+import (
+	"github.com/tiagoncardoso/fc-pge-temperatura-cep/internal/application/dto"
+	"github.com/tiagoncardoso/fc-pge-temperatura-cep/pkg/http_request"
+	"net/url"
+	"strings"
+)
+
+type RequestWeatherData struct {
+	weatherDataApiUrl string
+}
+
+func NewRequestWeatherData(weatherDataApiUrl string) *RequestWeatherData {
+	return &RequestWeatherData{
+		weatherDataApiUrl: weatherDataApiUrl,
+	}
+}
+
+func (r *RequestWeatherData) Execute(cityName string) (dto.WeatherApiDto, error) {
+	weatherUrl := makeWeatherApiUrl(r.weatherDataApiUrl, cityName)
+	weatherData, err := http_request.HttpGetRequest[dto.WeatherApiDto](weatherUrl)
+
+	if err != nil {
+		return dto.WeatherApiDto{}, err
+	}
+
+	return weatherData, nil
+}
+
+func makeWeatherApiUrl(weatherBaseUrl string, cityName string) string {
+	return strings.Replace(weatherBaseUrl, "{CITY}", url.QueryEscape(cityName), 1)
+}
