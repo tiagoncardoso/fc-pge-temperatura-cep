@@ -16,7 +16,11 @@ type RequestData interface {
 }
 
 func HttpGetRequest[T RequestData](url string) (T, error) {
-	return httpRequest[T](url, http.MethodGet, map[string]string{})
+	headers := map[string]string{
+		"Content-Type": "application/json",
+		"Accept":       "application/json",
+	}
+	return httpRequest[T](url, http.MethodGet, headers)
 }
 
 func httpRequest[T RequestData](url string, method string, headers map[string]string) (T, error) {
