@@ -6,6 +6,7 @@ type Conf struct {
 	ApiUrlZip     string `mapstructure:"API_URL_ZIP"`
 	ApiUrlWeather string `mapstructure:"API_URL_WEATHER"`
 	ApiKeyWeather string `mapstructure:"API_KEY_WEATHER"`
+	WebServerPort string `mapstructure:"WEB_SERVER_PORT"`
 }
 
 func LoadConfig() (*Conf, error) {
