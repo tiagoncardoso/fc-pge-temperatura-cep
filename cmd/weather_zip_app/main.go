@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/tiagoncardoso/fc-pge-temperatura-cep/config"
 	"github.com/tiagoncardoso/fc-pge-temperatura-cep/internal/application/usecase"
+	"github.com/tiagoncardoso/fc-pge-temperatura-cep/internal/infra/web"
+	"github.com/tiagoncardoso/fc-pge-temperatura-cep/internal/infra/web/webserver"
 )
 
 func main() {
@@ -13,8 +15,13 @@ func main() {
 	}
 
 	findZip := usecase.NewRequestZipData(conf.ApiUrlZip)
-	// TODO: Adicionar tratamento de CEP para converter sempre para 8 dígitos sem caracteres especiais
-	zipData, err := findZip.Execute(74333110)
+	findWeather := usecase.NewRequestWeatherData(conf.ApiUrlWeather + "" + conf.ApiKeyWeather)
 
-	fmt.Println("Resultado de Busca CEP:", zipData)
+	webServer := webserver.NewWebServer(conf.WebServerPort)
+	zipWeatherHandler := web.NewWeatherHandler(findZip, findWeather)
+
+	webServer.AddHandler("/temperature/{cep}", "GET", zipWeatherHandler.GetWeatherByZip)
+
+	fmt.Println("Starting web server on port", conf.WebServerPort)
+	webServer.Start()
 }

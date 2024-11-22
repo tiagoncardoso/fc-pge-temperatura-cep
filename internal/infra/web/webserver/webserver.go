@@ -52,5 +52,8 @@ func (s *WebServer) Start() {
 			s.Router.Head(handler.Path, handler.Handler)
 		}
 	}
-	http.ListenAndServe(":"+s.WebServerPort, s.Router)
+	err := http.ListenAndServe(":"+s.WebServerPort, s.Router)
+	if err != nil {
+		panic(err)
+	}
 }
