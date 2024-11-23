@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"errors"
 	"github.com/tiagoncardoso/fc-pge-temperatura-cep/internal/application/dto"
 	"github.com/tiagoncardoso/fc-pge-temperatura-cep/pkg/http_request"
 	"net/url"
@@ -18,6 +19,10 @@ func NewRequestWeatherData(weatherDataApiUrl string) *RequestWeatherData {
 }
 
 func (r *RequestWeatherData) Execute(cityName string) (dto.WeatherApiDto, error) {
+	if cityName == "" {
+		return dto.WeatherApiDto{}, errors.New("city name is empty")
+	}
+
 	weatherUrl := makeWeatherApiUrl(r.weatherDataApiUrl, cityName)
 	weatherData, err := http_request.HttpGetRequest[dto.WeatherApiDto](weatherUrl)
 
