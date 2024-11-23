@@ -3,7 +3,7 @@ package usecase
 import (
 	"github.com/stretchr/testify/assert"
 	"github.com/tiagoncardoso/fc-pge-temperatura-cep/internal/application/dto"
-	"github.com/tiagoncardoso/fc-pge-temperatura-cep/internal/application/usecase/mocks"
+	"github.com/tiagoncardoso/fc-pge-temperatura-cep/test/mocks"
 	"testing"
 )
 

@@ -2,7 +2,6 @@ package web
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/go-chi/chi/v5"
 	"github.com/tiagoncardoso/fc-pge-temperatura-cep/internal/application/dto"
 	"github.com/tiagoncardoso/fc-pge-temperatura-cep/internal/application/helper"
@@ -64,7 +63,6 @@ func (h *WeatherHandler) GetWeatherByZip(w http.ResponseWriter, r *http.Request)
 
 	err = json.NewEncoder(w).Encode(output)
 	if err != nil {
-		fmt.Println("erro aká")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
